@@ -15,7 +15,7 @@ key_initial = bytes(os.urandom(16))
 statekey_initial = bytes(os.urandom(16))
 salt_key =bytes(os.urandom(32))
 salt_statekey = bytes(os.urandom(32))
-chi= bytes(os.urandom(32))
+
 
 S=[]
 R=[]
@@ -58,28 +58,6 @@ def aes_ctr(key,data):
     return encrypted
 
 
-def GGF(input_bits,data):
-    key=key_initial
-    #CT2=G_0+G_1
-    #print(b64encode(CT2))
-    #print("duh")
-
-    for i in range (0,input_bits):
-        CT = aes_ctr(key, data)
-        #print (b64encode(CT))
-        G_0, G_1 = CT[:len(CT) / 2], CT[len(CT) / 2:]
-        #print(b64encode(G_0))
-        #print(b64encode(G_1))
-        if random.choice([True, False]):
-            key=G_1
-        else:
-            key=G_0
-        #print(b64encode(key))
-        #print(len(key))
-    return key
-
-
-
 #aes_ctr(key_initial,chi)
 #GGF(3)
 #print(random.choice([True,False]))
@@ -113,15 +91,16 @@ def checkIndex(n):
 def log():
     start_time = time.time()
     statekey = statekey_initial
+    key=key_initial
     #key = key_initial
     i=0
     ctr = 0
     with open("loggingevents_AES.txt", "rb") as ins:
         for line in ins:
-            key = GGF(3,salt_key)
+            key = aes_ctr(key,salt_key)
             #print (key)
             if CF(statekey,bytes(i))==1:
-                statekey=GGF(3,salt_statekey)
+                statekey=aes_ctr(statekey,salt_statekey)
                 #print(statekey)
                 ctr+=1
                 tag=hmac_sha256(b64encode(statekey),line)
@@ -132,15 +111,14 @@ def log():
                 KS.append([i, b64encode(key)])
             S.append([line,tag])
             #print(S[i])
-            i+=1
+            #i+=1
 
-    print (ctr)
+    #print (ctr)
     with open('loggingresult_AES.txt', 'w') as f:
         for item in S:
             f.write("%s\n" % item)
     print ("%s seconds to log " % (time.time() - start_time))
     return statekey
-
 
 def recover(n,cs,skey):
     KS2=[]
@@ -150,12 +128,13 @@ def recover(n,cs,skey):
     #statekey_r = statekey_initial
 
     # = key_initial
-    statekey_r_2= key_initial
+    statekey_r_2= statekey_initial
+    key_r=key_initial
 
     for i in xrange(0,n+cs):
-     key_r = GGF(3,salt_key)
+     key_r = aes_ctr(key_r,salt_key)
      if CF(statekey_r_2,bytes(i))==1:
-        statekey_r_2=GGF(3,salt_statekey)
+        statekey_r_2=aes_ctr(statekey_r_2,salt_statekey)
         KS2.append([i, b64encode(statekey_r_2)])
         #SKS.append(b64encode(statekey_r))
      else:
@@ -206,9 +185,6 @@ def recover(n,cs,skey):
                  #f.write("%s\n" % item)
 
     print ("%s seconds to recover " % (time.time() - start_time))
-
-
-
 
 
 def main():

@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+#Using HKDF AS PRF
 import hmac, hashlib
 import os
 import math
@@ -6,11 +7,11 @@ import time
 
 
 hash_len = 32
-length = 32
-key_initial = os.urandom(32)
-statekey_initial = os.urandom(32)
-salt_key =os.urandom(32)
-salt_statekey = os.urandom(32)
+length = 16
+key_initial = os.urandom(16)
+statekey_initial = os.urandom(16)
+salt_key =os.urandom(16)
+salt_statekey = os.urandom(16)
 S=[]
 R=[]
 ExpSet = set()
@@ -18,6 +19,8 @@ ExpSet = set()
 def hmac_sha256(key, data):
     return hmac.new(bytes(key), bytes(data), hashlib.sha256).hexdigest()
 
+def hash(key, index):
+    return hashlib.sha256(bytes(key)+bytes(index)).hexdigest()
 
 def hkdf(length, ikm, salt):
     prk = hmac_sha256(ikm, salt)
@@ -35,7 +38,7 @@ def hextodecimal(hex):
 
 
 def CF(key, index):
-    if hextodecimal(hmac_sha256(key,index))<pow(2,242):
+    if hextodecimal(hash(key,index))<pow(2,242):
         #print(hextodecimal(hmac_sha256(key,index)))
         #print(pow(2, 242))
         return 1
@@ -110,7 +113,7 @@ def recover(n,cs):
         else:
             ExpSet.add("i")
     for i in xrange(n,n+cs):
-            ExpSet.add("i")                                 
+            ExpSet.add("i")
     #if R is None:
         #print ("null")
     #for item in R:
@@ -133,9 +136,11 @@ def recover(n,cs):
         print("verification fails")
         print("4")
     else:
-        with open('recover.txt', 'w') as f:
-             for item in R:
-                 f.write("%s\n" % item)
+
+        print("success")
+        # with open('recover.txt', 'w') as f:
+        #      for item in R:
+        #          f.write("%s\n" % item)
     print ("%s seconds to recover " % (time.time() - start_time))
 
 

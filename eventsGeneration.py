@@ -13,3 +13,17 @@ def eventsGeneration():
 
 
 eventsGeneration()
+
+# def eventsStore():
+#   start_time = time.time()
+#   Events=[]
+#   for i in xrange(1048575):
+#       s = ''.join(random.choice(string.ascii_letters + string.digits) for x in xrange(160))
+#       Events.append(s)
+#       # with open('sending.txt', 'a') as f:
+#       # f.write("%s \n" % s)
+#       # print(Events[i])
+#     #print(len(Events))
+#   print (" %s seconds to generate all system events " % (time.time() - start_time))
+#
+# eventsStore()
