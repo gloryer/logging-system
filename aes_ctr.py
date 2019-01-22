@@ -58,8 +58,8 @@ def aes_ctr(key,data):
     return encrypted
 
 
-def GGF(input_bits,data):
-    key=key_initial
+def GGF(input_bits,data,key):
+    #key=key_initial
     #CT2=G_0+G_1
     #print(b64encode(CT2))
     #print("duh")
@@ -113,15 +113,15 @@ def checkIndex(n):
 def log():
     start_time = time.time()
     statekey = statekey_initial
-    #key = key_initial
+    key = key_initial
     i=0
     ctr = 0
     with open("loggingevents_AES.txt", "rb") as ins:
         for line in ins:
-            key = GGF(3,salt_key)
+            key = GGF(1,salt_key,key)
             #print (key)
             if CF(statekey,bytes(i))==1:
-                statekey=GGF(3,salt_statekey)
+                statekey=GGF(1,salt_statekey,statekey)
                 #print(statekey)
                 ctr+=1
                 tag=hmac_sha256(b64encode(statekey),line)
@@ -149,13 +149,13 @@ def recover(n,cs,skey):
    # SKS=[]
     #statekey_r = statekey_initial
 
-    # = key_initial
+    key_r = key_initial
     statekey_r_2= key_initial
 
     for i in xrange(0,n+cs):
-     key_r = GGF(3,salt_key)
+     key_r = GGF(1,salt_key,key_r)
      if CF(statekey_r_2,bytes(i))==1:
-        statekey_r_2=GGF(3,salt_statekey)
+        statekey_r_2=GGF(1,salt_statekey,statekey_r_2)
         KS2.append([i, b64encode(statekey_r_2)])
         #SKS.append(b64encode(statekey_r))
      else:
