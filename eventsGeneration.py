@@ -3,7 +3,7 @@ import string
 import time
 
 def eventsGeneration():
-  wr = open('loggingevents.txt','w')
+  wr = open('loggingevents_chacha.txt','w')
   start_time = time.time()
   for i in xrange(2**20):
     s = ''.join (random.choice(string.ascii_letters+string.digits) for x in xrange(160))
