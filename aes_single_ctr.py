@@ -1,16 +1,14 @@
-#!/usr/bin/env python3
-#Using GGM as PRF
+
 
 import hmac, hashlib
 import os
-import math
+
 import time
 from Crypto.Cipher import AES
-import random
+
 from base64 import b64encode
 
-#hash_len = 32
-#length = 32
+
 key_initial = bytes(os.urandom(16))
 statekey_initial = bytes(os.urandom(16))
 salt_key =bytes(os.urandom(32))
@@ -33,7 +31,6 @@ def hash(key, index):
 
 
 
-
 def aes_ctr(key,data):
     cipher = AES.new(key, AES.MODE_CTR)
 
@@ -44,39 +41,21 @@ def aes_ctr(key,data):
     cipher = AES.new(key, AES.MODE_CTR, nonce=nonce)
     #return encrypted
     plaintext = cipher.decrypt(encrypted)
-    #
-    #
-    #print(b64encode(cipher.nonce))
-    #print(b64encode(encrypted))
-    #print(len(encrypted))
-    #print(b64encode(plaintext))
-    #print(len(plaintext))
-    #print(b64encode(chi))
 
-    #print("The end of one iteration")
-    #
     return encrypted
 
 
-#aes_ctr(key_initial,chi)
-#GGF(3)
-#print(random.choice([True,False]))
 
-
-#print(len(data))
-#print(b64encode(data))
 def hextodecimal(hex):
     return int(hex,16)
 
 
 def CF(key, index):
     if hextodecimal(hash(key,index))<pow(2,242):
-        #print(hextodecimal(hmac_sha256(key,index)))
-        #print(pow(2, 242))
+
         return 1
     else:
-        #print(hextodecimal(hmac_sha256(key, index)))
-        #(pow(2, 242))
+
         return 0
 
 def checkIndex(n):
@@ -92,7 +71,7 @@ def log():
     start_time = time.time()
     statekey = statekey_initial
     key=key_initial
-    #key = key_initial
+
     i=0
     ctr = 0
     with open("loggingevents_AES.txt", "rb") as ins:
@@ -110,14 +89,16 @@ def log():
                 tag=hmac_sha256(b64encode(key),line)
                 KS.append([i, b64encode(key)])
             S.append([line,tag])
-            #print(S[i])
-            #i+=1
+            i+=1
 
-    #print (ctr)
+
+    print (ctr)
+    print ("%s total seconds to log " % (time.time() - start_time))
     with open('loggingresult_AES.txt', 'w') as f:
         for item in S:
             f.write("%s\n" % item)
-    print ("%s seconds to log " % (time.time() - start_time))
+    #print ("%s total seconds to log " % (time.time() - start_time))
+
     return statekey
 
 def recover(n,cs,skey):
@@ -192,13 +173,6 @@ def main():
     recover(len(S),15000,statekey_r)
 
 main()
-#key = hkdf(length, os.urandom(32), salt_key)
-#print(hmac_sha256(b'1234567890',bytes(255)))
-#print(hmac_sha256(b'i love yo',bytes(255)))
-
-
-#key1=hkdf(length, os.urandom(64), salt_key)
-#print(key)
 
 
 
