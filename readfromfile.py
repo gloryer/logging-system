@@ -46,4 +46,6 @@ def read2():
 
     print ("%s seconds to read " % (time.time() - start_time))
 
+
+
 read2()

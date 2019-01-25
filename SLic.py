@@ -16,6 +16,7 @@ statekey_initial = bytes(os.urandom(32))
 chi_S =bytes(os.urandom(32))
 chi_SC = bytes(os.urandom(32))
 lam = pow(2,15)
+nonce_chacha20=bytes(os.urandom(8))
 
 
 S=[]
@@ -101,19 +102,17 @@ def aes_ctr(key,data):
 
 def chacha20(key,data):
     #print(b64encode(data))
-    cipher = ChaCha20.new(key=key)
-    nonce=cipher.nonce
+    cipher = ChaCha20.new(key=key,nonce=nonce_chacha20)
 
     encrypted = cipher.encrypt(data)
 
-    cipher=ChaCha20.new(key=key,nonce=nonce)
-    plaintext = cipher.decrypt(encrypted)
+    cipher=ChaCha20.new(key=key,nonce=nonce_chacha20)
+    #plaintext = cipher.decrypt(encrypted)
     #print(len(encrypted))
     #print(b64encode(encrypted))
     #print(b64encode(plaintext))
     return encrypted
 #chacha20(key_initial,chi)
-
 
 
 def main():
