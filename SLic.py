@@ -52,7 +52,7 @@ def SLic_Log():
     start_time = time.time()
     key = key_initial
     i=0
-    with open("loggingevents_chacha.txt", "rb") as ins:
+    with open("loggingevents_chacha5.txt", "rb") as ins:
         for line in ins:
             key = chacha20(key,chi_S)
 
@@ -62,12 +62,12 @@ def SLic_Log():
 
             pos=random.randint(1,lam+i)
 
-           # if pos==lam+i:
-            S.append(element)
-            # else:
-            #     swap=S[pos]
-            #     S[pos]=element
-            #     S.append(swap)
+            if pos==lam+i:
+               S.append(element)
+            else:
+               swap=S[pos]
+               S[pos]=element
+               S.append(swap)
             i+=1
 
     with open('loggingresult_SLic.txt', 'w') as f:
