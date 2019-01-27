@@ -81,7 +81,7 @@ def log():
     key = key_initial
     i=0
     ctr = 0
-    with open("loggingevents_chacha.txt", "rb") as ins:
+    with open("loggingevents_chacha5.txt", "rb") as ins:
         for line in ins:
             key = chacha20(key,chi_S)
             #print (key)
@@ -105,6 +105,7 @@ def log():
         for item in S:
             f.write("%s\n" % item)
     print ("%s seconds to log " % (time.time() - start_time))
+
     with open('period6.txt', 'w') as f:
         for item in period:
             f.write("%s\n" % item)
@@ -147,7 +148,7 @@ def recover(n,cs,skey):
     K.add(b64encode(statekey_r_2))
     print(K)
 
-    with open("loggingevents_chacha.txt", "rb") as ins:
+    with open("loggingevents_chacha5.txt", "rb") as ins:
          for line in ins:
              if hmac_sha256(KS2[j][1],line+KS2[j][2])==S[j][1]:
                    R.append([j,line])
@@ -189,7 +190,7 @@ def main():
     statekey_r=log()
     print(b64encode(statekey_r))
 
-    recover(len(S),1500,statekey_r)
+    recover(len(S),15000,statekey_r)
 
 main()
 
