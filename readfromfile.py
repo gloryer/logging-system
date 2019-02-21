@@ -12,6 +12,8 @@ def readlines():
 # print(len(hash(os.urandom(16),0)))
 
 
+
+
 def read():
     S=[]
     start_time = time.time()
@@ -47,5 +49,7 @@ def read2():
     print ("%s seconds to read " % (time.time() - start_time))
 
 
+fp = open("receiving.txt", 'r+').read()
+chars = fp.decode('utf8')
+print len(chars)
 
-read2()

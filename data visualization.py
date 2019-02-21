@@ -93,12 +93,12 @@ def histogram():
     plt.plot([meandata, meandata], [0, 90], color='blue', linestyle="--")
     plt.plot([16384, 16384], [0, 90], color='red', linestyle="--")
 
-    plt.title('Distribution of time intervals in every state control key update')
-    plt.xlabel('time intervals (bin size is 5000 events)')
+    plt.title('Distribution of distance between every two state control keys')
+    plt.xlabel('distance (bin size is 5000 events)')
     plt.ylabel('count')
 
     plt.annotate('mean : x=%d events'%meandata, xy=(20000,85),color='blue')
-    plt.annotate('theoretical interval value: %d events' % 16384, xy=(20000, 80),color='red')
+    plt.annotate('theoretical distance value: %d events' % 16384, xy=(20000, 80),color='red')
     plt.annotate("24%", xy=(2500, 74),ha='center', va='bottom')
     plt.annotate("17%", xy=(8800, 53), ha='center', va='bottom')
     plt.annotate("15%", xy=(12500, 47), ha='center', va='bottom')
@@ -180,6 +180,32 @@ def bar_PI():
 
     plt.show()
 
+def drop():
+
+# x axis values
+    x = [400,450, 500, 505, 510, 520, 530,540,550,600,700,800]
+    # corresponding y axis values
+    y = ["0%","0%","0%", "2.52%","2.56%","2,6%","2.65%","2.7%","2.75%","3%", "3.5%","4%"]
+
+    # plotting the points
+    plt.plot(x, y, alpha=1, color='green', linestyle='dashed', linewidth=3,
+             marker='o',markerfacecolor='blue', markersize=12)
+
+    # setting x and y axis range
+    #plt.ylim(0, 8)
+    plt.xlim(400, 800)
+
+    # naming the x axis
+    plt.xlabel('sending rate(events/s)')
+    # naming the y axis
+    plt.ylabel('drop rate')
+
+    # giving a title to my graph
+    plt.title('UDP packet drop rate ')
+
+    # function to show the plot
+    plt.show()
 
 #histogram()
-bar_PI()
+#bar_PI()
+drop()
