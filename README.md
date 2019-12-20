@@ -1,6 +1,6 @@
 # logserver
 
- A Python event logging and log file recovery tool proposed in [Secure Logging with Security against Adaptive Crash Attack]. 
+ A Python event logging and log file recovery tool proposed in [Secure Logging with Security against Adaptive Crash Attack].. 
 
 
 
